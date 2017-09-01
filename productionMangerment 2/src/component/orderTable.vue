@@ -1,10 +1,10 @@
 
 <template>
-    <div class="clear">
-        <el-input placeholder="请选择关键字" icon="search" class="searchbox" v-model="seachbyId">
+    <div class="clear ">
+        <el-input placeholder="请选择关键字" icon="search" class="searchbox not-print" v-model="seachbyId">
         </el-input>
-        <el-button type="primary" class="addbtn" @click="addOrder">新 增 订 单</el-button>
-        <el-table :data="filtermatchdata" border style="width: 100%;" class="ordertable">
+        <el-button type="primary" class="addbtn not-print" @click="addOrder">新 增 订 单</el-button>
+        <el-table :data="filtermatchdata" border style="width: 100%;" class="ordertable not-print">
             <el-table-column type="expand">
                 <template scope="scope">
                     <el-form label-position="left" inline class="demo-table-expand">
@@ -73,7 +73,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-pagination v-bind:current-Page="pageIndex" v-bind:page-size="pageSize" :total="total" layout="total,sizes,prev,pager,next,jumper" v-bind:page-sizes="pageSizes" v-on:size-change="sizeChange" v-on:current-change="pageIndexChange" class="pagination">
+        <el-pagination v-bind:current-Page="pageIndex" v-bind:page-size="pageSize" :total="total" layout="total,sizes,prev,pager,next,jumper" v-bind:page-sizes="pageSizes" v-on:size-change="sizeChange" v-on:current-change="pageIndexChange" class="pagination not-print">
 
         </el-pagination>
 
@@ -85,24 +85,50 @@
                 <el-step title="订单出库"></el-step>
             </el-steps>
             <!-- <el-form :model="form">
-                            <el-form-item label="活动名称" :label-width="formLabelWidth">
-                                <el-input v-model="form.name" auto-complete="off"></el-input>
-                            </el-form-item>
-                            <el-form-item label="活动区域" :label-width="formLabelWidth">
-                                <el-select v-model="form.region" placeholder="请选择活动区域">
-                                    <el-option label="区域一" value="shanghai"></el-option>
-                                    <el-option label="区域二" value="beijing"></el-option>
-                                </el-select>
-                            </el-form-item>
-                        </el-form> -->
+                                    <el-form-item label="活动名称" :label-width="formLabelWidth">
+                                        <el-input v-model="form.name" auto-complete="off"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="活动区域" :label-width="formLabelWidth">
+                                        <el-select v-model="form.region" placeholder="请选择活动区域">
+                                            <el-option label="区域一" value="shanghai"></el-option>
+                                            <el-option label="区域二" value="beijing"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-form> -->
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="update">下一步</el-button>
+                <el-button type="primary" @click="update" v-if="this.selectedTable.status!='订单出库'">下一步</el-button>
             </div>
         </el-dialog>
-
+        <div class="pdf-dom" id="pdfDom">
+            <el-table :data="tableData1" style="width: 100%" class="table-boder" border='1'cellspacing="0" cellpadding="0" >
+                <el-table-column prop="date" label="日期" width="180">
+                </el-table-column>
+                <el-table-column prop="name" label="姓名" width="180">
+                </el-table-column>
+                <el-table-column prop="address" label="地址">
+                </el-table-column>
+            </el-table>
+        </div>
     </div>
 </template>
+<style>
+@media print {
+    .not-print {
+        opacity: 0
+    }
+}
+
+.pdf-dom {
+    display: none;
+    position: absolute;
+    top: 0;
+    height: 500px;
+}
+.table-boder{
+
+}
+</style>
 
 <script>
 // import this.servicerurl from '../js/host.js'
@@ -120,6 +146,23 @@ var orderStorage = {
 export default {
     data() {
         return {
+             tableData1: [{
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄'
+          }, {
+            date: '2016-05-04',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1517 弄'
+          }, {
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄'
+          }, {
+            date: '2016-05-03',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1516 弄'
+          }],
             dialogFormVisible: false,
             selectedTable: [],
             pageIndex: 0,
@@ -182,7 +225,7 @@ export default {
             //更改订单状态
 
             if (this.selectedTable.status == "生产完成") {
-                this.selectedTable.status ="订单出库"
+                this.selectedTable.status = "订单出库"
             }
             else { this.selectedTable.status = "生产完成" }
             //    console.log(this.selectedTable)
@@ -190,7 +233,7 @@ export default {
                 headers: {},
                 emulateJSON: true
             }).then(function(response) {
-            this.dialogFormVisible=false;
+                this.dialogFormVisible = false;
                 this.$http.get(this.servicerurl + '/order', {
                     pageIndex: this.pageIndex,
                     pageSize: this.pageSize
@@ -199,13 +242,12 @@ export default {
                         emulateJSON: true
                     }).then(function(response) {
                         console.log(response.data);
-
-
                         this.$message({
                             showClose: true,
                             message: '更新成功',
                             type: 'success'
                         })
+                        this.fetchData();
                     })
                 console.log(response.data);
 
@@ -243,33 +285,7 @@ export default {
                     console.log(response)
                 })
         },
-        handleDelete: function($index, row) {
-            var id1 = row.id;
-            //resource
-            var resource = this.$resource(this.servicerurl + '/order/{id}');
-            resource.delete({ id: id1 }).then(response => {
-                // success callback
-                this.$http.get(this.servicerurl + '/order', {}, {
-                    headers: {},
-                    emulateJSON: true
-                }).then(function(response) {
-                    //get again
-                    orderStorage.save(response.data);
-                    this.tableData = response.data;
-                    console.log(response.data);
-                }, function(response) {
-                    console.log(response)
-                })
-                console.log(id1);
-                console.log(response.data);
-            }, response => {
-                // error callback
-                console.log(id1);
-                console.log(response);
-            })
 
-
-        },
         searchFilter: function(prop, key, arr) {
             if (!key) {
                 return arr;
@@ -289,22 +305,16 @@ export default {
             this.$router.push({ path: '/order/add' })
         },
         printEdit: function($index, row) {
-            // var datatemp =
-            //     {
-            //         id: row.id,
-            //         companyname: row.companyname,
-            //         workname: row.workname,
-            //         totalprice: row.totalprice,
-            //         amount: row.amount,
-            //         pic: row.pic,
-            //         price: row.price,
-            //         targettime: row.targettime,
-            //     };
-            // console.log(datatemp);
-            // localStorage.setItem("orderTemp", JSON.stringify(datatemp));
-            // this.$router.push({ path: '/order/modify' })
-            // console.log("print")
-            window.print();
+            let pdfdom = document.getElementById('pdfDom').innerHTML;
+            // pdfdom.style.display="block"
+            let newwindow = window.open('_blank');
+            // newWindow.document.close();     //关闭document的输出流, 显示选定的数据
+            // newWindow.print();   //打印当前窗口
+            // return true;
+            newwindow.document.write(pdfdom);
+
+            newwindow.print();
+
         }
 
     }
