@@ -101,7 +101,7 @@
             </div>
         </el-dialog>
         <div class="pdf-dom" id="pdfDom">
-            <el-table :data="tableData1" style="width: 100%" class="table-boder" border='1' cellspacing="0" cellpadding="0">
+            <el-table :data="tableData1" style="width: 100%" class="table-boder" border=true cellspacing="0" cellpadding="0">
                 <el-table-column prop="date" label="日期" width="180">
                 </el-table-column>
                 <el-table-column prop="name" label="姓名" width="180">
@@ -313,7 +313,8 @@ export default {
            newwindow.document.write(pdfdom);
 
             newwindow.print();
-                        newWindow.document.close();     //关闭document的输出流, 显示选定的数据
+        // newWindow.document.close();     //关闭document的输出流, 显示选定的数据
+        
 
             //   window.print();
             return true;
