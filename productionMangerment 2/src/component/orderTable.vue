@@ -14,20 +14,7 @@
                         <el-form-item label="产品直接">
                             <span>{{ scope.row.dim}}</span>
                         </el-form-item>
-                        <el-form-item label="材料名称">
-                            <span>{{ scope.row.matrialname}}</span>
-                        </el-form-item>
-                        <el-form-item label="材料直径">
-                            <span>{{ scope.row.diameter}}</span>
-                        </el-form-item>
-                        <el-form-item label="材料长度">
-                            <span>{{ scope.row.length}}</span>
-                        </el-form-item>
-                        <el-form-item label="材料重量">
-                            <span>{{ scope.row.weight}}</span>
-                        </el-form-item>
                         <el-form-item label="总价">
-                            <!-- <span>{{ scope.row.totalprice}}</span> -->
                             <span>{{ scope.row.amount*scope.row.price}}</span>
                         </el-form-item>
                         <el-form-item label="数量">
@@ -37,14 +24,38 @@
                             <span>{{ scope.row.price}}</span>
                         </el-form-item>
                         <el-form-item label="简图">
-
                             <span class="imgstyle">
                                 <lazy-component @show="handler">
                                     <img v-bind:src="scope.row.pic" alt="" srcset="">
                                 </lazy-component>
                             </span>
-
                         </el-form-item>
+                        <el-form-item>
+                            <el-table :data="scope.row.specs">
+                                <el-table-column label="材料名称" width="100">
+                                    <template scope="scope">
+                                         <span>{{ scope.row.matrialname}}</span> 
+                                    </template>
+                                </el-table-column>
+                                 <el-table-column label="材料直径" width="100">
+                                    <template scope="scope">
+                                         <span>{{ scope.row.diameter}}</span> 
+                                    </template>
+                                </el-table-column>
+                                 <el-table-column label="材料长度" width="100">
+                                    <template scope="scope">
+                                         <span>{{ scope.row.length}}</span> 
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="材料重量" width="100">
+                                    <template scope="scope">
+                                         <span>{{ scope.row.weight}}</span> 
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </el-form-item>
+                     
+
                     </el-form>
                 </template>
             </el-table-column>
@@ -90,7 +101,7 @@
                 <el-button type="primary" @click="update" v-if="this.selectedTable.status!='订单出库'">下一步</el-button>
             </div>
         </el-dialog>
-       
+
     </div>
 </template>
 <style>
@@ -126,7 +137,7 @@ var orderStorage = {
 export default {
     data() {
         return {
-            
+
             dialogFormVisible: false,
             selectedTable: [],
             pageIndex: 0,
@@ -274,7 +285,7 @@ export default {
             //this.tableData1 = ordertemp;
             var printStorage = localStorage.setItem('printTemp', JSON.stringify(ordertemp))
 
-            
+
             // var pdfdom = document.getElementById('pdfDom').innerHTML;
             // var newwindow = window.open('print', '_blank');
 
@@ -282,7 +293,7 @@ export default {
             // newwindow.print();
             // localStorage.removeItem('printTemp')
             this.$router.push({ path: '/print' })
-             
+
         },
 
         s4: function() {
