@@ -83,6 +83,7 @@ import adminlist from './component/adminlist.vue'
 import mypage from './component/modifypwd.vue'
 import supply from './component/supplylist.vue'
 import outstock from './component/outstock.vue'
+import print from './component/orderprint.vue'
 
 const router = new VueRouter({
   mode: 'history',
@@ -98,6 +99,10 @@ const router = new VueRouter({
     {
       path: '/login',
       component: login
+    },
+    {
+      path: '/print',
+      component:print
     },
     {
       path: '/index',

@@ -11,29 +11,29 @@
                         <el-form-item label="工程名称">
                             <span>{{ scope.row.workname}}</span>
                         </el-form-item>
+                        <el-form-item label="产品直接">
+                            <span>{{ scope.row.dim}}</span>
+                        </el-form-item>
                         <el-form-item label="材料名称">
-                            <span>{{ scope.row.workname}}</span>
+                            <span>{{ scope.row.matrialname}}</span>
                         </el-form-item>
                         <el-form-item label="材料直径">
-                            <span>{{ scope.row.workname}}</span>
+                            <span>{{ scope.row.diameter}}</span>
                         </el-form-item>
                         <el-form-item label="材料长度">
-                            <span>{{ scope.row.workname}}</span>
+                            <span>{{ scope.row.length}}</span>
                         </el-form-item>
                         <el-form-item label="材料重量">
-                            <span>{{ scope.row.workname}}</span>
+                            <span>{{ scope.row.weight}}</span>
                         </el-form-item>
                         <el-form-item label="总价">
                             <!-- <span>{{ scope.row.totalprice}}</span> -->
                             <span>{{ scope.row.amount*scope.row.price}}</span>
                         </el-form-item>
-
                         <el-form-item label="数量">
                             <span>{{ scope.row.amount}}</span>
-
                         </el-form-item>
                         <el-form-item label="单价">
-
                             <span>{{ scope.row.price}}</span>
                         </el-form-item>
                         <el-form-item label="简图">
@@ -84,32 +84,13 @@
                 <el-step title="生产完成"></el-step>
                 <el-step title="订单出库"></el-step>
             </el-steps>
-            <!-- <el-form :model="form">
-                                            <el-form-item label="活动名称" :label-width="formLabelWidth">
-                                                <el-input v-model="form.name" auto-complete="off"></el-input>
-                                            </el-form-item>
-                                            <el-form-item label="活动区域" :label-width="formLabelWidth">
-                                                <el-select v-model="form.region" placeholder="请选择活动区域">
-                                                    <el-option label="区域一" value="shanghai"></el-option>
-                                                    <el-option label="区域二" value="beijing"></el-option>
-                                                </el-select>
-                                            </el-form-item>
-                                        </el-form> -->
+
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
                 <el-button type="primary" @click="update" v-if="this.selectedTable.status!='订单出库'">下一步</el-button>
             </div>
         </el-dialog>
-        <div class="pdf-dom" id="pdfDom">
-            <el-table :data="tableData1" style="width: 100%" class="table-boder" border=true cellspacing="0" cellpadding="0">
-                <el-table-column prop="date" label="日期" width="180">
-                </el-table-column>
-                <el-table-column prop="name" label="姓名" width="180">
-                </el-table-column>
-                <el-table-column prop="address" label="地址">
-                </el-table-column>
-            </el-table>
-        </div>
+       
     </div>
 </template>
 <style>
@@ -145,23 +126,7 @@ var orderStorage = {
 export default {
     data() {
         return {
-            tableData1: [{
-                date: '2016-05-02',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            }],
+            
             dialogFormVisible: false,
             selectedTable: [],
             pageIndex: 0,
@@ -304,20 +269,20 @@ export default {
             this.$router.push({ path: '/order/add' })
         },
         printEdit: function($index, row) {
-            var pdfdom = document.getElementById('pdfDom').innerHTML;
-            // pdfdom.style.display="block"
-            // debugger;
-           var newwindow = window.open(this.JsGuid(),'_blank');
-            // newwindow.print();   //打印当前窗口
+            let ordertemp = {};
+            ordertemp = row;
+            //this.tableData1 = ordertemp;
+            var printStorage = localStorage.setItem('printTemp', JSON.stringify(ordertemp))
+
             
-           newwindow.document.write(pdfdom);
+            // var pdfdom = document.getElementById('pdfDom').innerHTML;
+            // var newwindow = window.open('print', '_blank');
 
-            newwindow.print();
-        // newWindow.document.close();     //关闭document的输出流, 显示选定的数据
-        
-
-            //   window.print();
-            return true;
+            // newwindow.document.write(pdfdom);
+            // newwindow.print();
+            // localStorage.removeItem('printTemp')
+            this.$router.push({ path: '/print' })
+             
         },
 
         s4: function() {
