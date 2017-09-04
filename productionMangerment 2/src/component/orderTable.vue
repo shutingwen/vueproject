@@ -85,23 +85,23 @@
                 <el-step title="订单出库"></el-step>
             </el-steps>
             <!-- <el-form :model="form">
-                                    <el-form-item label="活动名称" :label-width="formLabelWidth">
-                                        <el-input v-model="form.name" auto-complete="off"></el-input>
-                                    </el-form-item>
-                                    <el-form-item label="活动区域" :label-width="formLabelWidth">
-                                        <el-select v-model="form.region" placeholder="请选择活动区域">
-                                            <el-option label="区域一" value="shanghai"></el-option>
-                                            <el-option label="区域二" value="beijing"></el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                </el-form> -->
+                                            <el-form-item label="活动名称" :label-width="formLabelWidth">
+                                                <el-input v-model="form.name" auto-complete="off"></el-input>
+                                            </el-form-item>
+                                            <el-form-item label="活动区域" :label-width="formLabelWidth">
+                                                <el-select v-model="form.region" placeholder="请选择活动区域">
+                                                    <el-option label="区域一" value="shanghai"></el-option>
+                                                    <el-option label="区域二" value="beijing"></el-option>
+                                                </el-select>
+                                            </el-form-item>
+                                        </el-form> -->
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
                 <el-button type="primary" @click="update" v-if="this.selectedTable.status!='订单出库'">下一步</el-button>
             </div>
         </el-dialog>
         <div class="pdf-dom" id="pdfDom">
-            <el-table :data="tableData1" style="width: 100%" class="table-boder" border='1'cellspacing="0" cellpadding="0" >
+            <el-table :data="tableData1" style="width: 100%" class="table-boder" border='1' cellspacing="0" cellpadding="0">
                 <el-table-column prop="date" label="日期" width="180">
                 </el-table-column>
                 <el-table-column prop="name" label="姓名" width="180">
@@ -125,9 +125,8 @@
     top: 0;
     height: 500px;
 }
-.table-boder{
 
-}
+.table-boder {}
 </style>
 
 <script>
@@ -146,23 +145,23 @@ var orderStorage = {
 export default {
     data() {
         return {
-             tableData1: [{
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄'
-          }, {
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄'
-          }, {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          }],
+            tableData1: [{
+                date: '2016-05-02',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+            }, {
+                date: '2016-05-04',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1517 弄'
+            }, {
+                date: '2016-05-01',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1519 弄'
+            }, {
+                date: '2016-05-03',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1516 弄'
+            }],
             dialogFormVisible: false,
             selectedTable: [],
             pageIndex: 0,
@@ -305,16 +304,29 @@ export default {
             this.$router.push({ path: '/order/add' })
         },
         printEdit: function($index, row) {
-            let pdfdom = document.getElementById('pdfDom').innerHTML;
+            var pdfdom = document.getElementById('pdfDom').innerHTML;
             // pdfdom.style.display="block"
-            let newwindow = window.open('_blank');
-            // newWindow.document.close();     //关闭document的输出流, 显示选定的数据
-            // newWindow.print();   //打印当前窗口
-            // return true;
-            newwindow.document.write(pdfdom);
+            // debugger;
+           var newwindow = window.open(this.JsGuid(),'_blank');
+            // newwindow.print();   //打印当前窗口
+            
+           newwindow.document.write(pdfdom);
 
             newwindow.print();
+                        newWindow.document.close();     //关闭document的输出流, 显示选定的数据
 
+            //   window.print();
+            return true;
+        },
+
+        s4: function() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+        },
+        JsGuid: function() {
+            return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
+                this.s4() + '-' + this.s4() + this.s4() + this.s4();
         }
 
     }
