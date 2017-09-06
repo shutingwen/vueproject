@@ -42,13 +42,13 @@
       <el-form-item label="部 件 长 度" class="fontcolor temipt" required >
         <div v-if="varNum==1">
           <span class="length_input">A</span>
-          <el-input style="width:70px" v-model="orderdetail.speclength.A" @blur="blurmethod"></el-input>
+          <el-input style="width:70px" v-model="orderdetail.speclength.A" @blur="blurmethod" prop='speclength'></el-input>
         </div>
         <div v-if="varNum==2">
           <span class="length_input">A</span>
           <el-input style="width:70px" v-model="orderdetail.speclength.A"></el-input>
           <span class="length_input">B</span>
-          <el-input style="width:70px" v-model="orderdetail.speclength.B"></el-input>
+          <el-input style="width:70px" v-model="orderdetail.speclength.B" @blur="blurmethod" prop='speclength'></el-input>
         </div>
         <div v-if="varNum==3">
           <span class="length_input">A</span>
@@ -56,7 +56,7 @@
           <span class="length_input">B</span>
           <el-input style="width:70px" v-model="orderdetail.speclength.B"></el-input>
           <span class="length_input">C</span>
-          <el-input style="width:70px" v-model="orderdetail.speclength.C"></el-input>
+          <el-input style="width:70px" v-model="orderdetail.speclength.C" @blur="blurmethod" prop='speclength'></el-input>
         </div>
         <div v-if="varNum==4">
           <span class="length_input">A</span>
@@ -66,11 +66,11 @@
           <span class="length_input">C</span>
           <el-input style="width:70px" v-model="orderdetail.speclength.C"></el-input>
           <span class="length_input">D</span>
-          <el-input style="width:70px" v-model="orderdetail.speclength.D"></el-input>
+          <el-input style="width:70px" v-model="orderdetail.speclength.D" @blur="blurmethod" prop='speclength'></el-input>
         </div>
       </el-form-item>
       <el-form-item label="总 长 度" class="fontcolor temipt"><!--cm-->
-        <p>{{totalLength}}cm</p>
+        <p>{{orderdetail.totalLength}}cm</p>
       </el-form-item>
       <el-form-item label="总 重 量" class="fontcolor temipt">
         <p>{{orderdetail.weight}}kg</p>
@@ -266,8 +266,19 @@ export default {
       console.log(response)
     })
 
+    //fetchtotalLength
+    this.$http.get(this.servicerurl+'/xxx',{
+      headers: {},
+      emulateJSON: true
+    }).then(function(response) {
+     
+      this.orderdetail.totalLength=response.data[0];
+      console.log(this.options4);
+    }, function(response) {
+      console.log(response)
+    })
 
-
+    
   },
 
   computed: {
@@ -275,19 +286,19 @@ export default {
       this.orderdetail.totalPrice = Number(this.orderdetail.amount) * Number(this.orderdetail.price);
       return this.orderdetail.totalPrice.toString();
     },
-    totalLength:function(){
-      //传直径系数与部件长度到后端
-      //apiurl要更改
-      this.$http.get(this.servicerurl+'/xxx',{id:this.orderdetail.picid,dim:this.orderdetail.dim},{
-        headers: {},
-      emulateJSON: true
-      }).then(function(response){
-         return response.data[0];
-          console.log(response.data[0])
-      },function(response){
-        console.log(response)
-      })
-    }
+    // totalLength:function(){
+    //   //传直径系数与部件长度到后端
+    //   //apiurl要更改
+    //   this.$http.get(this.servicerurl+'/xxx',{id:this.orderdetail.picid,dim:this.orderdetail.dim},{
+    //     headers: {},
+    //   emulateJSON: true
+    //   }).then(function(response){
+    //      return response.data[0];
+    //       console.log(response.data[0])
+    //   },function(response){
+    //     console.log(response)
+    //   })
+    // }
 
   },
   methods: {
@@ -298,6 +309,17 @@ export default {
   blurmethod:function(){
     console.log(this.orderdetail.speclength.A);
     console.log(this.orderdetail.speclength);
+ //传直径系数与部件长度到后端
+    //   //apiurl要更改
+      this.$http.post(this.servicerurl+'/xxx',{id:this.orderdetail.picid,speclength:this.orderdetail.speclength},{
+        headers: {},
+      emulateJSON: true
+      }).then(function(response){
+         
+          console.log(response.data)
+      },function(response){
+        console.log(response)
+      })
 
 },
     // addspecs: function() {
