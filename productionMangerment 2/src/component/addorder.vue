@@ -15,7 +15,7 @@
       <el-form-item label="钢 筋 直 径" class="fontcolor temipt" prop="dim">
         <div class="forminput">
           <!-- <el-input v-model="orderdetail.dim" placeholder="钢 筋 直 径" ></el-input> 远程联动-->
-          <el-select v-model="orderdetail.dim" placeholder="请选择"  >
+          <el-select v-model="orderdetail.dim" placeholder="请选择">
             <el-option v-for="item in optionsDim" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
@@ -24,12 +24,12 @@
       <el-form-item label="钢 筋 简 图" class="fontcolor temipt">
         <!-- pic等于图片的地址 -->
         <el-select v-model="orderdetail.picid" placeholder="请选择" @change="changeSelection">
-          <el-option v-for="item in pics" :key="item.id" :label="item.id" :value="item.id" >
+          <el-option v-for="item in pics" :key="item.id" :label="item.id" :value="item.id">
             <!-- 显示图片 -->
-             <img class="avatar" :src="item.src" style="height:36px"> 
+            <img class="avatar" :src="item.src" style="height:36px">
           </el-option>
         </el-select>
-         <img class="avatar" :src='orderdetail.picsrc' style="height:36px">  
+        <img class="avatar" :src='orderdetail.picsrc' style="height:36px">
       </el-form-item>
       <el-form-item label="数 量" class="fontcolor temipt" prop="account1">
         <el-input-number v-model="orderdetail.account" :min="0"></el-input-number>
@@ -46,42 +46,37 @@
         <el-date-picker v-model="orderdetail.date1" align="right" type="date" placeholder="选择日期" :picker-options="pickerOptions0">
         </el-date-picker>
       </el-form-item>
-      <el-form-item>
-        <!-- <el-button type="primary" @click="dialogFormVisible = true" style="margin-bottom: 10px;">添加材料</el-button> -->
-        <!-- <el-table :data="orderdetail.specs" style="margin-bottom: 20px; width:800px">
-          <el-table-column label="名称">
-            <template scope="scope">
-              <span style="margin-left: 10px;">{{ scope.row.matrialname }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="直径">
-            <template scope="scope">
-              <span style="margin-left: 10px;">{{ scope.row.diameter}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="数量">
-            <template scope="scope">
-              <span style="margin-left: 10px;">{{ scope.row.amount}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="长度">
-            <template scope="scope">
-              <span style="margin-left: 10px;">{{ scope.row.length}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="重量">
-            <template scope="scope">
-              <span style="margin-left: 10px;">{{ scope.row.weight}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="操作">
-            <template scope="scope">
-              <el-button size="small" type="danger" @click="handleDelete(scope.$index)">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table> -->
+
+      <el-form-item label="部件长度">
+        <div v-if="varNum==1">
+          <span class="length_input">A</span>
+          <el-input style="width:70px"></el-input>
+        </div>
+        <div v-if="varNum==2">
+          <span class="length_input">A</span>
+          <el-input style="width:70px"></el-input>
+          <span class="length_input">B</span>
+          <el-input style="width:70px"></el-input>
+        </div>
+        <div v-if="varNum==3">
+          <span class="length_input">A</span>
+          <el-input style="width:70px"></el-input>
+          <span class="length_input">B</span>
+          <el-input style="width:70px"></el-input>
+          <span class="length_input">C</span>
+          <el-input style="width:70px"></el-input>
+        </div>
+           <div v-if="varNum==4">
+          <span class="length_input">A</span>
+          <el-input style="width:70px"></el-input>
+          <span class="length_input">B</span>
+          <el-input style="width:70px"></el-input>
+          <span class="length_input">C</span>
+          <el-input style="width:70px"></el-input>
+           <span class="length_input">D</span>
+          <el-input style="width:70px"></el-input>
+        </div>
       </el-form-item>
-      <el-form-item label="部件长度"></el-form-item>
       <el-form-item label-width="80px" class="btnblock">
         <el-button type="primary" @click="onSubmit('ruleForm')">立即创建</el-button>
         <el-button @click="cancelAdd">取消</el-button>
@@ -89,37 +84,14 @@
 
     </el-form>
 
-    <!-- <el-dialog title="添加材料" v-model="dialogFormVisible">
-      <el-form :model="specsForm">
-        <el-form-item label="名称">
-          <el-input v-model="specsForm.matrialname" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="直径">
-          <el-input-number v-model="specsForm.diameter" :min="0" :max="100"></el-input-number>
-        </el-form-item>
-        <el-form-item label="数量">
-          <el-input-number v-model="specsForm.amount" :min="0" :max="10000"></el-input-number>
-        </el-form-item>
-        <el-form-item label="长度">
-          <el-input-number v-model="specsForm.length" :min="0" :max="10000"></el-input-number>
-        </el-form-item>
-        <el-form-item label="重量">
-          <el-input-number v-model="specsForm.weight" :min="0" :max="10000"></el-input-number>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addspecs">确 定</el-button>
-      </div>
-    </el-dialog> -->
-
   </div>
 </template>
 <script>
+
 export default {
   data() {
     return {
-     options4:[],
+      options4: [],
       optionsDim: [{
         value: 0.4,
         label: 0.4 + 'cm'
@@ -128,58 +100,58 @@ export default {
         label: 0.5 + 'cm'
       }],
       /*pics*/
-      picsrcroot:'../assetes/addimg',
-      pics:[{
-       src:require('../assets/addimg/000010.jpg'),
-       id:'000010'
+      picsrcroot: '../assetes/addimg',
+      pics: [{
+        src: require('../assets/addimg/000010.jpg'),
+        id: '000010-3',
       },
       {
-       src:require('../assets/addimg/000011.jpg'),
-       id:'000011'
+        src: require('../assets/addimg/000011.jpg'),
+        id: '000011-3'
       },
       {
-       src:require('../assets/addimg/000012.jpg'),
-       id:'000012'
+        src: require('../assets/addimg/000012.jpg'),
+        id: '000012-4'
       },
       {
-       src:require('../assets/addimg/000013.jpg'),
-       id:'000013'
+        src: require('../assets/addimg/000013.jpg'),
+        id: '000013-4'
       },
       {
-       src:require('../assets/addimg/000020.jpg'),
-       id:'000020'
+        src: require('../assets/addimg/000020.jpg'),
+        id: '000020-1'
       },
       {
-       src:require('../assets/addimg/000013.jpg'),
-       id:'000010'
+        src: require('../assets/addimg/000030.jpg'),
+        id: '000030-3'
       },
-      
+
       {
-       src:require('../assets/addimg/000021.jpg'),
-       id:'000021'
-      },
-      {
-       src:require('../assets/addimg/000031.jpg'),
-       id:'000031'
+        src: require('../assets/addimg/000021.jpg'),
+        id: '000021-2'
       },
       {
-       src:require('../assets/addimg/000032.jpg'),
-       id:'000032'
+        src: require('../assets/addimg/000031.jpg'),
+        id: '000031-1'
       },
       {
-       src:require('../assets/addimg/000035.jpg'),
-       id:'000035'
+        src: require('../assets/addimg/000032.jpg'),
+        id: '000032-1'
       },
       {
-       src:require('../assets/addimg/000040.jpg'),
-       id:'000040'
+        src: require('../assets/addimg/000035.jpg'),
+        id: '000035-2'
       },
       {
-       src:require('../assets/addimg/000041.jpg'),
-       id:'000041'
+        src: require('../assets/addimg/000040.jpg'),
+        id: '000040-2'
+      },
+      {
+        src: require('../assets/addimg/000041.jpg'),
+        id: '000041-3'
       },
       ],
-      
+      varNum: 0,
       value: '',
 
       dialogFormVisible: false,
@@ -194,7 +166,7 @@ export default {
         workName: '',
         companyName: '',
         picid: '',
-        picsrc:'',
+        picsrc: '',
         account: '',
         price: '',
         date1: '',
@@ -242,24 +214,24 @@ export default {
       }
     }
   },
-  mounted(){
+  mounted() {
     //fetchcompany
     this.$http.get(this.servicerurl + '/menber', {
-        headers: {},
-        emulateJSON: true
-      }).then(function(response) {
-        let opttemp=[{label:'',value:''}];
-        for(var i=0;i<response.data.length;i++){
-         opttemp[i]={label:response.data[i].companyname,value:response.data[i].companyname}
-       }
-       this.options4=opttemp
-        console.log(this.options4);
-      }, function(response) {
-        console.log(response)
-      })
+      headers: {},
+      emulateJSON: true
+    }).then(function(response) {
+      let opttemp = [{ label: '', value: '' }];
+      for (var i = 0; i < response.data.length; i++) {
+        opttemp[i] = { label: response.data[i].companyname, value: response.data[i].companyname }
+      }
+      this.options4 = opttemp
+      console.log(this.options4);
+    }, function(response) {
+      console.log(response)
+    })
 
 
-    
+
   },
 
   computed: {
@@ -267,23 +239,17 @@ export default {
       this.orderdetail.totalPrice = Number(this.orderdetail.account) * Number(this.orderdetail.price);
       return this.orderdetail.totalPrice.toString();
     },
-    
+
 
   },
   methods: {
-      changeSelection:function(){
-//  let path=this.$refs.select.selectedLabel
-// this.$refs.select.$el.children[0].children[1].setAttribute('style','background:url('+ path +') no-repeat;color:#fff');
-console.log('change')
-this.orderdetail.picsrc=require('../assets/addimg/'+this.orderdetail.picid+'.jpg')
-console.log(this.orderdetail.picsrc);
-},
-   changemethod:function(){
-     console.log(this.orderdetail.pic)
-    //  图片显示
-//     let path=this.$refs.select.selectedLabel
-// this.$refs.select.$el.children[0].children[1].setAttribute('style','background:url('+ path +') no-repeat;color:#fff');
-   },
+    changeSelection: function() {
+      console.log(this.orderdetail.picid.split('-')[0])
+      this.orderdetail.picsrc = require('../assets/addimg/' + this.orderdetail.picid.split('-')[0] + '.jpg')
+      this.varNum = this.orderdetail.picid.split('-')[1]
+      console.log(this.varNum)
+      console.log(this.orderdetail.picsrc);
+    },
     handleDelete(index) {
       this.orderdetail.specs.splice(index, 1);
     },
@@ -400,5 +366,9 @@ console.log(this.orderdetail.picsrc);
   padding: 10px;
   border-radius: 15px;
   margin-top: 40px;
+}
+
+.length_input {
+  display: inline;
 }
 </style>
