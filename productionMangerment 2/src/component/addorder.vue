@@ -15,7 +15,7 @@
       <el-form-item label="钢 筋 直 径" class="fontcolor temipt" prop="dim">
         <div class="forminput">
           <!-- <el-input v-model="orderdetail.dim" placeholder="钢 筋 直 径" ></el-input> 远程联动-->
-          <el-select v-model="orderdetail.dim" placeholder="请选择" >
+          <el-select v-model="orderdetail.dim" placeholder="请选择"  >
             <el-option v-for="item in optionsDim" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
@@ -23,12 +23,13 @@
       </el-form-item>
       <el-form-item label="钢 筋 简 图" class="fontcolor temipt">
         <!-- pic等于图片的地址 -->
-        <el-select v-model="orderdetail.pic" placeholder="请选择" @change="changemethod">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" >
+        <el-select v-model="orderdetail.picid" placeholder="请选择" @change="changeSelection">
+          <el-option v-for="item in pics" :key="item.id" :label="item.id" :value="item.id" >
             <!-- 显示图片 -->
-            <!-- <img class="avatar" :src="xx" style="height:36px"> -->
+             <img class="avatar" :src="item.src" style="height:36px"> 
           </el-option>
         </el-select>
+         <img class="avatar" :src='orderdetail.picsrc' style="height:36px">  
       </el-form-item>
       <el-form-item label="数 量" class="fontcolor temipt" prop="account1">
         <el-input-number v-model="orderdetail.account" :min="0"></el-input-number>
@@ -46,8 +47,8 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="dialogFormVisible = true" style="margin-bottom: 10px;">添加材料</el-button>
-        <el-table :data="orderdetail.specs" style="margin-bottom: 20px; width:800px">
+        <!-- <el-button type="primary" @click="dialogFormVisible = true" style="margin-bottom: 10px;">添加材料</el-button> -->
+        <!-- <el-table :data="orderdetail.specs" style="margin-bottom: 20px; width:800px">
           <el-table-column label="名称">
             <template scope="scope">
               <span style="margin-left: 10px;">{{ scope.row.matrialname }}</span>
@@ -78,8 +79,9 @@
               <el-button size="small" type="danger" @click="handleDelete(scope.$index)">删除</el-button>
             </template>
           </el-table-column>
-        </el-table>
+        </el-table> -->
       </el-form-item>
+      <el-form-item label="部件长度"></el-form-item>
       <el-form-item label-width="80px" class="btnblock">
         <el-button type="primary" @click="onSubmit('ruleForm')">立即创建</el-button>
         <el-button @click="cancelAdd">取消</el-button>
@@ -87,7 +89,7 @@
 
     </el-form>
 
-    <el-dialog title="添加材料" v-model="dialogFormVisible">
+    <!-- <el-dialog title="添加材料" v-model="dialogFormVisible">
       <el-form :model="specsForm">
         <el-form-item label="名称">
           <el-input v-model="specsForm.matrialname" auto-complete="off"></el-input>
@@ -109,7 +111,7 @@
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="addspecs">确 定</el-button>
       </div>
-    </el-dialog>
+    </el-dialog> -->
 
   </div>
 </template>
@@ -125,28 +127,59 @@ export default {
         value: 0.5,
         label: 0.5 + 'cm'
       }],
-      /*test*/
-      options: [{
-        value: '选项1',
-        label: '黄金糕',
-       
-      }, {
-        value: '选项2',
-        label: '双皮奶',
-       
-      }, {
-        value: '选项3',
-        label: '蚵仔煎',
-        
-      }, {
-        value: '选项4',
-        label: '龙须面',
-       
-      }, {
-        value: '选项5',
-        label: '北京烤鸭',
-        
-      }],
+      /*pics*/
+      picsrcroot:'../assetes/addimg',
+      pics:[{
+       src:require('../assets/addimg/000010.jpg'),
+       id:'000010'
+      },
+      {
+       src:require('../assets/addimg/000011.jpg'),
+       id:'000011'
+      },
+      {
+       src:require('../assets/addimg/000012.jpg'),
+       id:'000012'
+      },
+      {
+       src:require('../assets/addimg/000013.jpg'),
+       id:'000013'
+      },
+      {
+       src:require('../assets/addimg/000020.jpg'),
+       id:'000020'
+      },
+      {
+       src:require('../assets/addimg/000013.jpg'),
+       id:'000010'
+      },
+      
+      {
+       src:require('../assets/addimg/000021.jpg'),
+       id:'000021'
+      },
+      {
+       src:require('../assets/addimg/000031.jpg'),
+       id:'000031'
+      },
+      {
+       src:require('../assets/addimg/000032.jpg'),
+       id:'000032'
+      },
+      {
+       src:require('../assets/addimg/000035.jpg'),
+       id:'000035'
+      },
+      {
+       src:require('../assets/addimg/000040.jpg'),
+       id:'000040'
+      },
+      {
+       src:require('../assets/addimg/000041.jpg'),
+       id:'000041'
+      },
+      ],
+      
       value: '',
 
       dialogFormVisible: false,
@@ -160,7 +193,8 @@ export default {
       orderdetail: {
         workName: '',
         companyName: '',
-        pic: '',
+        picid: '',
+        picsrc:'',
         account: '',
         price: '',
         date1: '',
@@ -224,22 +258,10 @@ export default {
         console.log(response)
       })
 
-      //fetchpicture
-      this.$http(this.servicerurl+'',{
-        headers: {},
-        emulateJSON: true
-      }).then(function(response){
-        let opttemp=[{label:'',value:''}];
-        for(var i=0;i<response.data.length;i++){
-          //获取图片路径
-         opttemp[i]={label:response.data[i].src,value:response.data[i].src}
-       }
-      //  this.options=opttemp
-      },function(response){
-        console.log(response)
-      })
+
     
   },
+
   computed: {
     totalPrice: function() {
       this.orderdetail.totalPrice = Number(this.orderdetail.account) * Number(this.orderdetail.price);
@@ -249,6 +271,13 @@ export default {
 
   },
   methods: {
+      changeSelection:function(){
+//  let path=this.$refs.select.selectedLabel
+// this.$refs.select.$el.children[0].children[1].setAttribute('style','background:url('+ path +') no-repeat;color:#fff');
+console.log('change')
+this.orderdetail.picsrc=require('../assets/addimg/'+this.orderdetail.picid+'.jpg')
+console.log(this.orderdetail.picsrc);
+},
    changemethod:function(){
      console.log(this.orderdetail.pic)
     //  图片显示
