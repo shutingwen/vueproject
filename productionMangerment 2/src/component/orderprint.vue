@@ -31,7 +31,7 @@
                 <el-form-item label="单价">
                     <span>{{ tableData2.price}}</span>
                 </el-form-item>
-                <el-table :data="tableData2.specs" style="width: 100%" class="tabelprint">
+                <!-- <el-table :data="tableData2.specs" style="width: 100%" class="tabelprint">
                     <el-table-column label="材料名称">
                         <template scope="scope">
                             {{scope.row.matrialname}}
@@ -52,7 +52,7 @@
                             {{scope.row.weight}}
                         </template>
                     </el-table-column>
-                </el-table>
+                </el-table> -->
 
             </el-form>
             <el-button @click="print" class="not-print" type="primary" style="margin:10px">确定打印</el-button>
@@ -88,7 +88,7 @@ export default {
         this.tableData2 = JSON.parse(localStorage.getItem('printTemp') || []);
         this.tableData2.specs = test;
         console.log(this.tableData2)
-        console.log(this.tableData2.specs);
+        // console.log(this.tableData2.specs);
     },
     methods: {
         print: function() {
