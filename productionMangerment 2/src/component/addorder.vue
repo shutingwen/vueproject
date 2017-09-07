@@ -1,24 +1,24 @@
 <template>
   <div>
     <el-form class="form food_form" :rules="rules" ref="ruleForm" :model="orderdetail" :inline="true">
-      <el-form-item label="工 程 名 字" class="fontcolor temipt" prop="workName">
-        <el-input v-model="orderdetail.workName" placeholder="工 程 名 字" required=true class="forminput"></el-input>
+      <el-form-item label="工 程 名 字" class="fontcolor temipt" prop="workname">
+        <el-input v-model="orderdetail.workname" placeholder="工 程 名 字" required=true class="forminput"></el-input>
       </el-form-item>
-      <el-form-item label="公 司 名 字" class="fontcolor temipt" prop="companyName">
-        <el-select v-model="orderdetail.companyName" placeholder="请选择" filterable>
+      <el-form-item label="公 司 名 字" class="fontcolor temipt" required>
+        <el-select v-model="companystring" placeholder="请选择" filterable @change="changemethod">
           <el-option v-for="item in options4" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="钢 筋 直 径" class="fontcolor temipt" required>
-        <div class="forminput">
+       
           <el-select v-model="orderdetail.dim" placeholder="请选择">
             <el-option v-for="item in optionsDim" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
-        </div>
+  
       </el-form-item>
-      <el-form-item label="钢 筋 简 图" class="fontcolor temipt" prop="picid">
+      <el-form-item label="钢 筋 简 图" class="fontcolor temipt" prop="picid" >
         <el-select v-model="orderdetail.picid" placeholder="请选择" @change="changeSelection">
           <el-option v-for="item in pics" :key="item.id" :label="item.id" :value="item.id">
             <img class="avatar" :src="item.src" style="height:36px">
@@ -192,9 +192,11 @@ export default {
 
       varNum: 0,
       value: '',
+      companystring:'',
       orderdetail: {
-        workName: '',
-        companyName: '',
+        workname: '',
+        companyid:'',
+        companyname: '',
         picid: '',
         picsrc: '',
         amount: 0,
@@ -217,11 +219,11 @@ export default {
       },
 
       rules: {
-        workName: [
+        workname: [
           { required: true, message: '请输入工程名称', trigger: 'blur' },
           { min: 3, max: 25, message: '长度少于25 个字符', trigger: 'blur' }
         ],
-        companyName: [
+        companyname: [
           { required: true, message: '请输入公司名称', trigger: 'blur' },
           { min: 3, max: 25, message: '长度少于25 个字符', trigger: 'blur' }
         ],
@@ -250,11 +252,7 @@ export default {
       }
     }
   },
-  watch: {
-    totalLength: function() {
-      this.blurmethod();
-    }
-  },
+ 
   mounted() {
     //fetchcompany
     this.$http.get(this.servicerurl + '/menber', {
@@ -263,7 +261,7 @@ export default {
     }).then(function(response) {
       let opttemp = [{ label: '', value: '' }];
       for (var i = 0; i < response.data.length; i++) {
-        opttemp[i] = { label: response.data[i].companyname, value: response.data[i].companyname }
+        opttemp[i] = { label: response.data[i].companyname, value: response.data[i].companyname+"|"+response.data[i].id }
       }
       this.options4 = opttemp
       console.log(this.options4);
@@ -271,7 +269,7 @@ export default {
       console.log(response)
     })
 
-    this.blurmethod();
+ 
 
 
   },
@@ -351,16 +349,25 @@ export default {
     }
   },
   methods: {
-   
+    changemethod:function(){
+      let value=this.companystring
+       let id=value.split("|")[1];
+       let name=value.split("|")[0];
+      this.orderdetail.companyid=id
+      this.orderdetail.companyname=name
+    
+    },
     changeSelection: function() {
       this.orderdetail.picsrc = require('../assets/addimg/' + this.orderdetail.picid.split('-')[0] + '.jpg')
       this.varNum = this.orderdetail.picid.split('-')[1]
     },
     onSubmit: function(formName) {
+
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.orderdetail.totalPrice = this.totalPrice;
           this.orderdetail.totalLength = this.totalLength;
+         
           this.$http.post(this.servicerurl + '/order', this.orderdetail, {
             headers: {},
             emulateJSON: true
