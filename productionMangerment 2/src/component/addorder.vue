@@ -73,8 +73,7 @@
       <el-form-item label="总 长 度" class="fontcolor temipt">
         <!--cm-->
         <p>{{ totalLength }}cm</p>
-        <!-- <p v-bind="totalLength">cm</p> -->
-        <!-- <p>{{this.orderdetail.totalLength*Number(this.orderdetail.amount)}}</p> -->
+       
       </el-form-item>
       <el-form-item label="总 重 量" class="fontcolor temipt">
         <p>{{orderdetail.weight}}kg</p>
@@ -90,7 +89,6 @@
   </div>
 </template>
 <script>
-
 export default {
   data() {
     return {
@@ -346,9 +344,6 @@ export default {
         if (id == formulaList[i].id) {
           console.log(formulaList[i].formula)
           this.orderdetail.totalLength = Number(formulaList[i].formula)* Number(this.orderdetail.amount);
-          // this.orderdetail.totalLength = formulaList[i].formula;
-          // this.orderdetail.totalLength.$set()
-          // this.$set(this.orderdetail, this.orderdetail.totalLength, Number(formulaList[i].formula) * Number(this.orderdetail.amount))
           console.log(this.orderdetail.totalLength);
           return this.orderdetail.totalLength;
         }
@@ -356,77 +351,7 @@ export default {
     }
   },
   methods: {
-    // blurmethod: function() {
-    //   console.log(this.orderdetail.picid);
-    //   let id = this.orderdetail.picid.split('-')[0];
-    //   let speclength = this.orderdetail
-    
-    //   let A = Number(speclength.A);
-    //   let B = Number(speclength.B);
-    //   let C = Number(speclength.C);
-    //   let D = Number(speclength.D);
-    //   console.log(id)
-    //   let formulaList = [{
-    //     id: "000010",
-    //     formula: (A + B + C) * 2
-    //   },
-    //   {
-    //     id: "000011",
-    //     formula: (A + (B + C) / 2) * 2 + 10
-    //   },
-    //   {
-    //     id: "000012",
-    //     formula: A + B + C + D + 12
-    //   },
-    //   {
-    //     id: "000013",
-    //     formula: A + B + C + D + 10
-    //   },
-    //   {
-    //     id: "000020",
-    //     formula: A
-    //   },
-    //   {
-    //     id: "000021",
-    //     formula: (A + B) / 2
-    //   },
-    //   {
-    //     id: "000030",
-    //     formula: A + B + C
-    //   },
-    //   {
-    //     id: "000031",
-    //     formula: A + 10
-    //   },
-    //   {
-    //     id: "000032",
-    //     formula: A + 14
-    //   },
-    //   {
-    //     id: "000035",
-    //     formula: (A + B) / 2 + 14
-    //   },
-    //   {
-    //     id: "000040",
-    //     formula: A + B
-    //   },
-    //   {
-    //     id: "000041",
-    //     formula: A + B + C
-    //   },
-    //   ]
-    //   for (var i = 0; i < formulaList.length; i++) {
-    //     if (id == formulaList[i].id) {
-    //       console.log(formulaList[i].formula)
-    //       this.orderdetail.totalLength = Number(formulaList[i].formula)* Number(this.orderdetail.amount);
-    //       // this.orderdetail.totalLength = formulaList[i].formula;
-    //       // this.$set(this.orderdetail, this.orderdetail.totalLength, Number(formulaList[i].formula) * Number(this.orderdetail.amount))
-
-    //       console.log(this.orderdetail.totalLength);
-    //       return this.orderdetail.totalLength;
-    //     }
-    //   }
-    // },
+   
     changeSelection: function() {
       this.orderdetail.picsrc = require('../assets/addimg/' + this.orderdetail.picid.split('-')[0] + '.jpg')
       this.varNum = this.orderdetail.picid.split('-')[1]
@@ -441,7 +366,7 @@ export default {
             emulateJSON: true
           }).then(function(response) {
             //getagain,save in total_localstorage
-            this.$http.get(servicerurl + '/order', {}, {
+            this.$http.get(this.servicerurl + '/order', {}, {
               headers: {},
               emulateJSON: true
             }).then(function(response) {
