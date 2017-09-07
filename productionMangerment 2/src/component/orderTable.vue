@@ -64,7 +64,6 @@
                     <el-button @click="updatestatus(scope.$index, scope.row)" type="text" v-if="scope.row.status!='订单出库'">更新进度</el-button>
                     <span v-if="scope.row.status=='订单出库'">订单已出库</span>
                     <el-button @click="printEdit(scope.$index, scope.row)" type="text">订单打印</el-button>
-
                 </template>
             </el-table-column>
         </el-table>
