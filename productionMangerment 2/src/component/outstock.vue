@@ -38,10 +38,10 @@
                         <el-button @click="handleEdit(scope.$index, scope.row)" v-if="scope.row.status!='已出库'">确认出库</el-button>
                     </template>
                 </el-table-column>
-    
+
             </el-table>
             <el-pagination v-bind:current-Page="pageIndex" v-bind:page-size="pageSize" :total="total" layout="total,sizes,prev,pager,next,jumper" v-bind:page-sizes="pageSizes" v-on:size-change="sizeChangem" v-on:current-change="pageIndexChangem" class="pagination">
-    
+
             </el-pagination>
             <el-dialog title="提示" v-model="disvisibity1" size="tiny">
                 <span>确认出库完成</span>
@@ -58,14 +58,9 @@
                         <p>{{ scope.row.orderid}}</p>
                     </template>
                 </el-table-column>
-                <el-table-column label="负责人">
-                    <template scope="scope">
-                        <p>{{ scope.row.owner}}</p>
-                    </template>
-                </el-table-column>
                 <el-table-column label="出库时间">
                     <template scope="scope">
-                        <p>{{ scope.row.class}}</p>
+                        <p>{{ scope.row.outtime}}</p>
                     </template>
                 </el-table-column>
                 <el-table-column label="状态">
@@ -73,12 +68,7 @@
                         <p>{{ scope.row.status}}</p>
                     </template>
                 </el-table-column>
-                <el-table-column label="出库日期">
-                    <template scope="scope">
-                        <el-icon name="time"></el-icon>
-                        <span>{{ scope.row.date }}</span>
-                    </template>
-                </el-table-column>
+
                 <el-table-column label="操作">
                     <template scope="scope">
                         <el-button type='text' @click="handleEditorder(scope.$index, scope.row)" v-if="scope.row.status!='已出库'">确认出库</el-button>
@@ -87,9 +77,9 @@
                 </el-table-column>
             </el-table>
             <el-pagination v-bind:current-Page="pageIndex" v-bind:page-size="pageSize" :total="total" layout="total,sizes,prev,pager,next,jumper" v-bind:page-sizes="pageSizes" v-on:size-change="sizeChangeo" v-on:current-change="pageIndexChangeo" class="pagination">
-    
+
             </el-pagination>
-    
+
             <el-dialog title="提示" v-model="disvisibity2" size="tiny">
                 <span>确认出库完成</span>
                 <span slot="footer" class="dialog-footer">
@@ -102,6 +92,7 @@
 </template>
 
 <script>
+
 export default {
     data() {
         return {
@@ -116,11 +107,11 @@ export default {
             disvisibity2: false,
         }
     },
-    mounted: function () {
+    mounted: function() {
         this.loading = true;
 
         this.fetchDatamaterial();
-
+       this.fetchDataorder()
 
     },
     methods: {
@@ -132,21 +123,21 @@ export default {
             this.selectTable = row;
             this.disvisibity2 = true;
         },
-        confirmoutorder: function () {
+        confirmoutorder: function() {
             this.disvisibity2 = false;
             this.selectTable.status = "已出库"
-            this.$http.put(this.servicerurl+'/orderout' + '/' + this.selectTable.id, this.selectTable, {
+            this.$http.put(this.servicerurl + '/orderout' + '/' + this.selectTable.id, this.selectTable, {
                 headers: {},
                 emulateJSON: true
-            }).then(function (response) {
+            }).then(function(response) {
                 //getagain,save in total_localstorage
-                this.$http.get(this.servicerurl+'/orderout', {
+                this.$http.get(this.servicerurl + '/orderout', {
                     pageIndex: this.pageIndex,
                     pageSize: this.pageSize
                 }, {
                         headers: {},
                         emulateJSON: true
-                    }).then(function (response) {
+                    }).then(function(response) {
                         console.log(response.data);
                         this.$message({
                             showClose: true,
@@ -156,25 +147,25 @@ export default {
                         this.dialogFormVisible = false;
                     })
                 console.log(response.data);
-            }, function (response) {
+            }, function(response) {
                 console.log(response);
             })
         },
-        confirmout: function () {
+        confirmout: function() {
             this.disvisibity1 = false;
             this.selectTable.status = "已出库"
-            this.$http.put(this.servicerurl+'/materialout' + '/' + this.selectTable.id, this.selectTable, {
+            this.$http.put(this.servicerurl + '/materialout' + '/' + this.selectTable.id, this.selectTable, {
                 headers: {},
                 emulateJSON: true
-            }).then(function (response) {
+            }).then(function(response) {
                 //getagain,save in total_localstorage
-                this.$http.get(this.servicerurl+'/materialout', {
+                this.$http.get(this.servicerurl + '/materialout', {
                     pageIndex: this.pageIndex,
                     pageSize: this.pageSize
                 }, {
                         headers: {},
                         emulateJSON: true
-                    }).then(function (response) {
+                    }).then(function(response) {
                         console.log(response.data);
                         this.$message({
                             showClose: true,
@@ -184,7 +175,7 @@ export default {
                         this.dialogFormVisible = false;
                     })
                 console.log(response.data);
-            }, function (response) {
+            }, function(response) {
                 console.log(response);
             })
         },
@@ -194,57 +185,57 @@ export default {
         filterTag(value, row) {
             return row.class === value;
         },
-        sizeChangem: function (pageSize) {
+        sizeChangem: function(pageSize) {
             this.pageSize = pageSize;
             this.fetchDatamaterial();
         },
-        pageIndexChangem: function (pageIndex) {
+        pageIndexChangem: function(pageIndex) {
             this.pageIndex = pageIndex;
             this.fetchDatamaterial();
         },
-        sizeChangeo: function (pageSize) {
+        sizeChangeo: function(pageSize) {
             this.pageSize = pageSize;
             this.fetchDataorder();
         },
-        pageIndexChangeo: function (pageIndex) {
+        pageIndexChangeo: function(pageIndex) {
             this.pageIndex = pageIndex;
             this.fetchDataorder();
         },
-        fetchDatamaterial: function () {
+        fetchDatamaterial: function() {
             this.loading = true;
             //材料出库
-            this.$http.get(this.servicerurl+'/materialout', {
+            this.$http.get(this.servicerurl + '/materialout', {
                 pageIndex: this.pageIndex,
                 pageSize: this.pageSize
             }, {
                     headers: {},
                     emulateJSON: true
-                }).then(function (response) {
+                }).then(function(response) {
                     this.materialData = response.data;
                     this.total = this.materialData.length;
                     this.loading = false;
                     console.log(response.data)
-                }, function (response) {
+                }, function(response) {
                     console.log(response)
                 })
 
 
         },
-        fetchDataorder: function () {
+        fetchDataorder: function() {
             this.loading = true;
-            //材料出库
-            this.$http.get(this.servicerurl+'/orderout', {
+            //订单出库
+            this.$http.get(this.servicerurl + '/order', {
                 pageIndex: this.pageIndex,
                 pageSize: this.pageSize
             }, {
                     headers: {},
                     emulateJSON: true
-                }).then(function (response) {
+                }).then(function(response) {
                     this.orderData = response.data;
                     this.total = this.orderData.length;
                     this.loading = false;
                     console.log(response.data)
-                }, function (response) {
+                }, function(response) {
                     console.log(response)
                 })
 

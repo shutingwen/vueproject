@@ -34,7 +34,7 @@
       </el-form-item>
 
       <el-form-item label="到 期 日" class="fontcolor temipt" prop="date2" required>
-        <el-date-picker v-model="targettime" align="right" type="date" placeholder="选择日期" :picker-options="pickerOptions0" @change="changdate">
+        <el-date-picker v-model="targettime" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions0" @change="changdate">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="部 件 长 度" class="fontcolor temipt" required>
@@ -89,6 +89,21 @@
   </div>
 </template>
 <script>
+function formatDateTime(inputTime) {
+  var date = new Date(inputTime);
+  var y = date.getFullYear();
+  var m = date.getMonth() + 1;
+  m = m < 10 ? ('0' + m) : m;
+  var d = date.getDate();
+  d = d < 10 ? ('0' + d) : d;
+  var h = date.getHours();
+  h = h < 10 ? ('0' + h) : h;
+  var minute = date.getMinutes();
+  var second = date.getSeconds();
+  minute = minute < 10 ? ('0' + minute) : minute;
+  second = second < 10 ? ('0' + second) : second;
+  return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
+}
 export default {
   data() {
     return {
@@ -215,7 +230,6 @@ export default {
       account1: '',
       pickerOptions0: {
         disabledDate(time) {
-
           return time.getTime() < Date.now() - 8.64e7;
         },
       },
@@ -351,8 +365,10 @@ export default {
     }
   },
   methods: {
-    changdate: function() {
-      this.orderdetail.targettime = this.targettime.getFullYear() + "-" + (this.targettime.getMonth() + 1) + "-" + this.targettime.getDate();
+    changdate: function() { 
+      var timestring = formatDateTime(this.targettime)
+       var text = typeof (timestring);
+     this.orderdetail.targettime=timestring;
     },
     changemethod: function() {
       let value = this.companystring
