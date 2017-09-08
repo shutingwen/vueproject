@@ -107,7 +107,7 @@ export default {
 
         var code = JSON.parse(localStorage.getItem('st_admin'));
         code[0].password1 = "";
-        console.log(code[0]);
+        
         this.admininfo = code[0];
 
 
@@ -136,18 +136,12 @@ export default {
                             message: '修改密码成功',
                             type: 'success'
                         })
-                        //getagain,save in total_localstorage
-                        // this.$http.get(this.servicerurl+'/user' + '/' + this.admininfo.id, {}, {
-                        //   headers: {},
-                        // emulateJSON: true
-                        // }).then(function (response) {
-                        //   console.log(response.data);
-                        //localStorage.setItem('st_admin',JSON.stringify(response.data))
+                       
                         this.dialogVisible = false;
                         //})
-                        console.log(response.data);
+                       
                     }, function (response) {
-                        console.log(response);
+                       
                     })
                 }
                 else {
@@ -156,7 +150,7 @@ export default {
                         message: '修改密码失败',
                         type: 'warning'
                     })
-                    console.log('error submit!!');
+                  
                     return false;
                 }
             });

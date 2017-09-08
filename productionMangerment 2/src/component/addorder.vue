@@ -280,9 +280,9 @@ export default {
         opttemp[i] = { label: response.data[i].companyname, value: response.data[i].companyname + "|" + response.data[i].id }
       }
       this.options4 = opttemp
-      console.log(this.options4);
+     
     }, function(response) {
-      console.log(response)
+     
     })
 
 
@@ -297,14 +297,14 @@ export default {
     },
 
     totalLength: function() {
-      console.log(this.orderdetail.picid);
+      
       let id = this.orderdetail.picid.split('-')[0];
       let speclength = this.orderdetail
       let A = Number(speclength.A);
       let B = Number(speclength.B);
       let C = Number(speclength.C);
       let D = Number(speclength.D);
-      console.log(id)
+     
       let formulaList = [{
         id: "000010",
         formula: (A + B + C) * 2
@@ -356,9 +356,9 @@ export default {
       ]
       for (var i = 0; i < formulaList.length; i++) {
         if (id == formulaList[i].id) {
-          console.log(formulaList[i].formula)
+          
           this.orderdetail.totalLength = Number(formulaList[i].formula) * Number(this.orderdetail.amount);
-          console.log(this.orderdetail.totalLength);
+         
           return this.orderdetail.totalLength;
         }
       }
@@ -389,7 +389,7 @@ export default {
           this.orderdetail.totalPrice = this.totalPrice;
           this.orderdetail.totalLength = this.totalLength;
           this.orderdetail.timetarget = this.targettime;
-          console.log(this.orderdetail)
+         
           this.$http.post(this.servicerurl + '/order', this.orderdetail, {
             headers: {},
             emulateJSON: true
@@ -399,17 +399,22 @@ export default {
               headers: {},
               emulateJSON: true
             }).then(function(response) {
-              console.log(response.data);
+              
               localStorage.setItem('orderList', JSON.stringify(response.data));
 
               this.$router.push({ path: '/order/listMangerment' })
             })
-            console.log(response.data);
+           
           }, function(response) {
-            console.log(response);
+          
           })
         } else {
-          console.log('error submit!!');
+          this.$message({
+            showClose: true,
+            message: '添加失败',
+            type: 'warning'
+          })
+          
           return false;
         }
       });

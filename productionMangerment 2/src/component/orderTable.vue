@@ -146,16 +146,15 @@ export default {
                 // 拼接路径
                 if(response.data[i].picid){
                response.data[i].pic=require('../assets/addimg/' + response.data[i].picid.split('-')[0] + '.jpg')
-               console.log(response.data[i].pic)
-                console.log(response.data[i].picid.split('-')[0])
+              
                 }
             }
             orderStorage.save(response.data);
             this.tableData = orderStorage.fetch();
-            console.log(response.data.pic)
+           
             
         }, function(response) {
-            console.log(response)
+           
         })
 
     },
@@ -174,7 +173,7 @@ export default {
             return matchdata;
         },
         totalPrice: function() {
-            console.log(this.orderdetail1);
+           
             row.totalprice = Number(row.amount1) * Number(row.price1);
             return this.orderdetail1.totalprice.toString();
         }
@@ -186,7 +185,7 @@ export default {
             else this.active = 1;
             this.selectedTable = row;
             this.dialogFormVisible = true;
-            console.log(this.selectedTable)
+            
         },
         update: function() {
             //更改订单状态
@@ -195,7 +194,7 @@ export default {
                 this.selectedTable.status = "订单出库"
             }
             else { this.selectedTable.status = "生产完成" }
-            //    console.log(this.selectedTable)
+            
             this.$http.put(this.servicerurl + '/order' + '/' + this.selectedTable.id, this.selectedTable, {
                 headers: {},
                 emulateJSON: true
@@ -208,7 +207,7 @@ export default {
                         headers: {},
                         emulateJSON: true
                     }).then(function(response) {
-                        console.log(response.data);
+                        
                         this.$message({
                             showClose: true,
                             message: '更新成功',
@@ -216,15 +215,15 @@ export default {
                         })
                         this.fetchData();
                     })
-                console.log(response.data);
+              
 
             }, function(response) {
-                console.log(response);
+                
             })
 
         },
         handler: function() {
-            console.log('this component is showing')
+           
         },
 
         sizeChange: function(pageSize) {
@@ -247,9 +246,9 @@ export default {
                     orderStorage.save(response.data);
                     this.tableData = orderStorage.fetch();
                     this.loading = false;
-                    console.log(response.data)
+                   
                 }, function(response) {
-                    console.log(response)
+                    
                 })
         },
 

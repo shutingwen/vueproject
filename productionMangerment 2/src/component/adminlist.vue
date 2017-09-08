@@ -203,9 +203,9 @@ export default {
             }).then(function(response) {
                 orderStorage.save(response.data);
                 this.tableData = orderStorage.fetch();
-                console.log(response.data)
+
             }, function(response) {
-                console.log(response)
+
             })
 
     },
@@ -243,26 +243,30 @@ export default {
                             headers: {},
                             emulateJSON: true
                         }).then(function(response) {
-                             this.dialogFormVisible_update= false;
-                        this.$message({
-                            showClose: true,
-                            message: '添加成功',
-                            type: 'success'
+                            this.dialogFormVisible_update = false;
+                            this.$message({
+                                showClose: true,
+                                message: '添加成功',
+                                type: 'success'
+                            })
+
                         })
-                            console.log(response.data);
-                        })
-                        console.log(response.data);
+
                     }, function(response) {
-                        console.log(response);
+
                     })
                 } else {
-                    console.log('error submit!!');
+                    this.$message({
+                        showClose: true,
+                        message: '添加失败',
+                        type: 'warning'
+                    })
                     return false;
                 }
             });
         },
         test: function() {
-            console.log(this.selectTable.access)
+            
         },
         addAdmin: function() {
             this.dialogFormVisible_update = true;
@@ -293,12 +297,12 @@ export default {
                         })
                         orderStorage.save(response.data);
                         this.tableData = response.data;
-                        console.log(response.data);
+                       
                     }, function(response) {
-                        console.log(response)
+                       
                     })
 
-                console.log(response.data);
+               
             }, response => {
                 // error callback
                 this.$message({
@@ -306,7 +310,7 @@ export default {
                     message: '删除失败',
                     type: 'error'
                 })
-                console.log(response);
+                
             })
         },
         sizeChange: function(pageSize) {
@@ -329,9 +333,9 @@ export default {
                     orderStorage.save(response.data);
                     this.tableData = orderStorage.fetch();
                     this.loading = false;
-                    console.log(response.data)
+                    
                 }, function(response) {
-                    console.log(response)
+                   
                 })
         },
         searchFilter: function(prop, key, arr) {
@@ -370,7 +374,7 @@ export default {
                                 headers: {},
                                 emulateJSON: true
                             }).then(function(response) {
-                                console.log(response.data);
+                               
                                 // localStorage.setItem('orderList',JSON.stringify(response.data)); 
                                 orderStorage.save(response.data);
 
@@ -380,9 +384,9 @@ export default {
                                     type: 'success'
                                 })
                             })
-                        console.log(response.data);
+                        
                     }, function(response) {
-                        console.log(response);
+                       
                     })
                 } else {
                     this.$message({
@@ -390,7 +394,7 @@ export default {
                         message: '更新管理员信息失败',
                         type: 'warning'
                     })
-                    console.log('error submit!!');
+                  
                     return false;
                 }
             });

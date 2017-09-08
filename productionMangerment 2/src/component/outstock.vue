@@ -178,7 +178,7 @@ export default {
                         headers: {},
                         emulateJSON: true
                     }).then(function(response) {
-                        console.log(response.data);
+                       
                         this.$message({
                             showClose: true,
                             message: '确认成功',
@@ -186,9 +186,9 @@ export default {
                         })
                         this.dialogFormVisible = false;
                     })
-                console.log(response.data);
+            
             }, function(response) {
-                console.log(response);
+               
             })
         },
         confirmout: function() {
@@ -206,7 +206,7 @@ export default {
                         headers: {},
                         emulateJSON: true
                     }).then(function(response) {
-                        console.log(response.data);
+                        
                         this.$message({
                             showClose: true,
                             message: '确认成功',
@@ -214,13 +214,13 @@ export default {
                         })
                         this.dialogFormVisible = false;
                     })
-                console.log(response.data);
+              
             }, function(response) {
-                console.log(response);
+                
             })
         },
         handleDelete(index, row) {
-            console.log(index, row);
+         
         },
         filterTag(value, row) {
             return row.class === value;
@@ -254,9 +254,9 @@ export default {
                     this.materialData = response.data;
                     this.total = this.materialData.length;
                     this.loading = false;
-                    console.log(response.data)
+                   
                 }, function(response) {
-                    console.log(response)
+                   
                 })
 
 
@@ -276,9 +276,9 @@ export default {
                     this.orderData = response.data;
                     this.total = this.orderData.length;
                     this.loading = false;
-                    console.log(response.data)
+                    
                 }, function(response) {
-                    console.log(response)
+                  
                 })
 
 

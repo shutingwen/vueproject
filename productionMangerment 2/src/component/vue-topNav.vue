@@ -65,14 +65,13 @@ export default {
   computed:{
      username:function(){
        let admin = JSON.parse(localStorage.getItem('st_admin'));
-        console.log(admin[0].name)
+       
          
     return  admin[0].name  
      },
      path:function(){
          if(this.$route.name!=null){
-         //console.log(code[1].path)
-         console.log(this.$route.name)
+         
          return this.$route.name
          }
      }

@@ -25,7 +25,7 @@ export default {
      this.people=response.data;
    
     },function(response){
-      console.log(response)
+     
     })
   }
 }

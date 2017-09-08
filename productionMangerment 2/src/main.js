@@ -75,13 +75,11 @@ import vuehome from './component/common/vuehome.vue'
 import vueTopNav from './component/vue-topNav.vue'
 import orderTable from './component/orderTable.vue'
 import addorder from './component/addorder.vue'
-import modifyorder from './component/modifyorder.vue'
 import salechart from './component/saleschart.vue'
 
 import menbertable from './component/menbertable.vue'
 import addmenber from './component/addmenber.vue'
-import modifymenber from './component/menbermodify.vue'
-// import addadmin from './component/addadmin.vue'
+
 import adminlist from './component/adminlist.vue'
 import mypage from './component/modifypwd.vue'
 import supply from './component/supplylist.vue'
@@ -134,11 +132,7 @@ const router = new VueRouter({
           component: addorder,
           name: '订单管理-添加订单'
         },
-        {
-          path: '/order/modify',
-          component: modifyorder,
-          name: '订单管理-修改订单',
-        },
+ 
         {
           path: '/order/sale',
           component: salechart,
@@ -163,11 +157,7 @@ const router = new VueRouter({
           component: addmenber,
           name: '会员管理-添加会员'
         },
-        {
-          path: '/menber/modify',
-          component: modifymenber,
-          name: '会员管理-修改会员'
-        }
+       
       ],
       component: vuehome
     },

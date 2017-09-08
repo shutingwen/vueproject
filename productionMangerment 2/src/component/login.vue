@@ -44,7 +44,7 @@ export default {
                  name:this.form.name,
                  password:this.form.password
              }
-            console.log(this.form.password);
+           
             this.$http.get(this.servicerurl+'/user?name='+this.form.name+'&password='+this.form.password).then((response) => {
            //this.$http.post(this.servicerurl+'/user',loginparam).then((response)=>{
              const self=this;
@@ -75,7 +75,7 @@ export default {
                     this.access=0
                 }
             }).then((response) => {
-                console.log(response)
+               
             })
         }
     }

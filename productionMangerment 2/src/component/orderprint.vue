@@ -60,7 +60,7 @@ export default {
 
         this.tableData2 = JSON.parse(localStorage.getItem('printTemp') || []);
         
-        console.log(this.tableData2)
+       
       
     },
     methods: {

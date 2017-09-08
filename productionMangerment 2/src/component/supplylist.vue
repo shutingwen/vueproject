@@ -323,9 +323,9 @@ export default {
                         this.newtable.class = "";
                         this.newtable.amount = 0;
                         this.newtable.limit = 0;
-                        console.log(response.data);
+                        
                     }, function (response) {
-                        console.log(response);
+                       
                         this.$message({
                             showClose: true,
                             message: '添加失败',
@@ -333,7 +333,11 @@ export default {
                         })
                     })
                 } else {
-                    console.log('error submit!!');
+                    this.$message({
+                            showClose: true,
+                            message: '添加失败',
+                            type: 'success'
+                        })
                     return false;
                 }
             });
@@ -353,7 +357,7 @@ export default {
                 //this.addrecord.push(this.addtable);
                 //this.addrecord.push(this.addtable);
                 this.fetchDataorder();
-                console.log(this.addrecord);
+              
                 //getagain,save in total_localstorage
                 this.$http.get(this.servicerurl+'/material', {
                     pageIndex: this.pageIndex,
