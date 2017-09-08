@@ -141,14 +141,20 @@ export default {
             headers: {},
             emulateJSON: true
         }).then(function(response) {
-            orderStorage.save(response.data);
-            this.tableData = orderStorage.fetch();
-            console.log(response.data)
             for (var i = 0; i < response.data.length; i++) {
                 // 拼接路径
-                // response.data[i].pic=require('../assets/addimg/' + response.data[i].picid.split('-')[0] + '.jpg')
-                console.log(response.data[i].pic);
+                // 
+                // console.log(response.data[i].pic);
+                if(response.data[i].picid){
+               response.data[i].pic=require('../assets/addimg/' + response.data[i].picid.split('-')[0] + '.jpg')
+               console.log(response.data[i].pic)
+                console.log(response.data[i].picid.split('-')[0])
+                }
             }
+            orderStorage.save(response.data);
+            this.tableData = orderStorage.fetch();
+            console.log(response.data.pic)
+            
         }, function(response) {
             console.log(response)
         })
